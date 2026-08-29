@@ -149,9 +149,7 @@ function mostrarEstudos() {
                     ) {
 
                         if (
-                            !selecionados.includes(
-                                indice
-                            )
+                            !selecionados.includes(indice)
                         ) {
 
                             selecionados.push(
@@ -677,44 +675,42 @@ function excluirSelecionados() {
 
 function atualizarProgresso() {
 
-    if (
-        estudos.length === 0
-    ) {
+    /*
+       Calcula primeiro a porcentagem.
+    */
 
-        progresso.innerHTML =
-    '<div class="circuloProgresso" style="--porcentagem: ' +
-        porcentagem +
-        '%;">' +
-        '<strong>' +
-            porcentagem +
-            '%' +
-        '</strong>' +
-        '<span>concluído</span>' +
-    '</div>';
+    let porcentagem = 0;
 
-        return;
+
+    if (estudos.length > 0) {
+
+        const concluidos =
+            estudos.filter(
+                function(estudo) {
+
+                    return estudo.concluido;
+
+                }
+            ).length;
+
+
+        porcentagem =
+            Math.round(
+                (concluidos / estudos.length) * 100
+            );
 
     }
 
 
-    const concluidos =
-        estudos.filter(
-            function(estudo) {
-
-                return estudo.concluido;
-
-            }
-        ).length;
-
-
-    const porcentagem =
-        Math.round(
-            (concluidos / estudos.length) * 100
-        );
-
+    /*
+       Cria o círculo e envia a porcentagem
+       para o CSS através de --porcentagem.
+    */
 
     progresso.innerHTML =
-        '<div class="circuloProgresso">' +
+        '<div class="circuloProgresso" style="--porcentagem: ' +
+            porcentagem +
+            '%;">' +
             '<strong>' +
                 porcentagem +
                 '%' +
@@ -723,8 +719,13 @@ function atualizarProgresso() {
         '</div>';
 
 
+    /*
+       Mensagem quando chegar a 100%.
+    */
+
     if (
-        porcentagem === 100
+        porcentagem === 100 &&
+        estudos.length > 0
     ) {
 
         progresso.innerHTML +=
@@ -748,6 +749,8 @@ botao.addEventListener(
 );
 
 
+/* Adicionar com Enter */
+
 input.addEventListener(
     "keydown",
     function(evento) {
@@ -764,17 +767,23 @@ input.addEventListener(
 );
 
 
+/* Seleção */
+
 modoSelecaoBtn.addEventListener(
     "click",
     alternarModoSelecao
 );
 
 
+/* Marcar / desmarcar todos */
+
 marcarTodosBtn.addEventListener(
     "click",
     marcarTodos
 );
 
+
+/* Excluir selecionados */
 
 excluirSelecionadosBtn.addEventListener(
     "click",
