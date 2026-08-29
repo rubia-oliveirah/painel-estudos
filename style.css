@@ -2,14 +2,10 @@
     box-sizing: border-box;
 }
 
-
 body {
     margin: 0;
-
     font-family: Arial, sans-serif;
-
     background: #eef3f9;
-
     color: #0f2d5c;
 }
 
@@ -20,27 +16,19 @@ body {
 
 header {
     background: #3d73e6;
-
     color: white;
-
     text-align: left;
-
     padding: 35px 8%;
-
     border-radius: 0 0 18px 18px;
 }
 
-
 header h1 {
     margin: 0 0 8px;
-
     font-size: 34px;
 }
 
-
 header p {
     margin: 0;
-
     font-size: 17px;
 }
 
@@ -51,13 +39,11 @@ header p {
 
 main {
     width: min(1200px, 94%);
-
     margin: 40px auto;
 
     display: grid;
 
     grid-template-columns: 1fr 1.4fr;
-
     grid-template-rows: auto auto;
 
     gap: 25px;
@@ -70,21 +56,16 @@ main {
 
 .secaoAdicionar {
     grid-column: 1;
-
     grid-row: 1;
 }
 
-
 .secaoProgresso {
     grid-column: 1;
-
     grid-row: 2;
 }
 
-
 .secaoEstudos {
     grid-column: 2;
-
     grid-row: 1 / 3;
 }
 
@@ -104,26 +85,21 @@ section {
         0 8px 25px rgba(0, 0, 0, 0.06);
 }
 
-
 section h2 {
     margin-top: 0;
-
     color: #0f2d5c;
 }
 
 
 /* =========================
-   ADICIONAR
+   ADICIONAR ASSUNTO
 ========================= */
 
 .campoAdicionar {
     display: flex;
-
     flex-direction: column;
-
     gap: 12px;
 }
-
 
 #assuntoInput {
     width: 100%;
@@ -139,11 +115,9 @@ section h2 {
     outline: none;
 }
 
-
 #assuntoInput:focus {
     border-color: #3d73e6;
 }
-
 
 #adicionarBtn {
     width: 100%;
@@ -164,7 +138,6 @@ section h2 {
 
     cursor: pointer;
 }
-
 
 #adicionarBtn:hover {
     background: #1d4ed8;
@@ -187,11 +160,9 @@ section h2 {
     margin-bottom: 18px;
 }
 
-
 .cabecalhoEstudos h2 {
     margin: 0;
 }
-
 
 .acoesEstudos {
     display: flex;
@@ -205,7 +176,6 @@ section h2 {
     gap: 8px;
 }
 
-
 .acoesEstudos button {
     border: none;
 
@@ -218,7 +188,6 @@ section h2 {
     cursor: pointer;
 }
 
-
 #modoSelecaoBtn,
 #marcarTodosBtn {
     background: #e8eef8;
@@ -226,12 +195,10 @@ section h2 {
     color: #1e40af;
 }
 
-
 #modoSelecaoBtn:hover,
 #marcarTodosBtn:hover {
     background: #dbe5f5;
 }
-
 
 .botaoExcluirSelecionados {
     background: #fee2e2;
@@ -239,14 +206,13 @@ section h2 {
     color: #b91c1c;
 }
 
-
 .botaoExcluirSelecionados:hover {
     background: #fecaca;
 }
 
 
 /* =========================
-   LISTA
+   LISTA DE ESTUDOS
 ========================= */
 
 #listaEstudos {
@@ -258,7 +224,6 @@ section h2 {
 
     width: 100%;
 }
-
 
 #listaEstudos li {
     position: relative;
@@ -278,14 +243,13 @@ section h2 {
     border-bottom: 1px solid #e2e8f0;
 }
 
-
 #listaEstudos li:last-child {
     border-bottom: none;
 }
 
 
 /* =========================
-   ESTUDO
+   ÁREA DO ESTUDO
 ========================= */
 
 .areaEstudo {
@@ -302,7 +266,6 @@ section h2 {
     cursor: pointer;
 }
 
-
 .areaEstudo input[type="checkbox"] {
     width: 19px;
 
@@ -313,7 +276,6 @@ section h2 {
     cursor: pointer;
 }
 
-
 .areaEstudo span {
     font-size: 17px;
 
@@ -321,7 +283,6 @@ section h2 {
 
     word-break: break-word;
 }
-
 
 .estudoConcluido {
     text-decoration: line-through;
@@ -344,7 +305,6 @@ section h2 {
     margin-left: 15px;
 }
 
-
 .checkboxSelecao {
     width: 18px;
 
@@ -355,13 +315,12 @@ section h2 {
 
 
 /* =========================
-   MENU
+   MENU ⋮
 ========================= */
 
 .menuAcoes {
     position: relative;
 }
-
 
 .menuBotao {
     display: flex;
@@ -389,13 +348,11 @@ section h2 {
     cursor: pointer;
 }
 
-
 .menuBotao:hover {
     background: #f1f5f9;
 
     border-radius: 7px;
 }
-
 
 .menuOpcoes {
     position: absolute;
@@ -418,7 +375,6 @@ section h2 {
     overflow: hidden;
 }
 
-
 .menuOpcoes button {
     display: block;
 
@@ -437,25 +393,22 @@ section h2 {
     cursor: pointer;
 }
 
-
 .menuOpcoes button:hover {
     background: #f1f5f9;
 }
 
 
 /* =========================
-   PROGRESSO
+   PAINEL DE PROGRESSO
 ========================= */
 
 .secaoProgresso {
     text-align: center;
 }
 
-
 .secaoProgresso h2 {
     text-align: left;
 }
-
 
 #progresso {
     display: flex;
@@ -466,6 +419,11 @@ section h2 {
 
     gap: 20px;
 }
+
+
+/* =========================
+   CÍRCULO DE PROGRESSO
+========================= */
 
 .circuloProgresso {
     --porcentagem: 0%;
@@ -493,6 +451,9 @@ section h2 {
     position: relative;
 }
 
+
+/* Parte interna do círculo */
+
 .circuloProgresso::before {
     content: "";
 
@@ -505,6 +466,9 @@ section h2 {
 
     background: #f8fafc;
 }
+
+
+/* Texto fica por cima da parte interna */
 
 .circuloProgresso strong,
 .circuloProgresso span {
@@ -519,13 +483,16 @@ section h2 {
     color: #0f2d5c;
 }
 
-
 .circuloProgresso span {
     font-size: 15px;
 
     color: #64748b;
 }
 
+
+/* =========================
+   MENSAGEM DE 100%
+========================= */
 
 .mensagemParabens {
     width: 100%;
@@ -558,23 +525,19 @@ section h2 {
         gap: 20px;
     }
 
-
     .secaoAdicionar,
     .secaoEstudos,
     .secaoProgresso {
         width: 100%;
     }
 
-
     header {
         padding: 28px 6%;
     }
 
-
     header h1 {
         font-size: 28px;
     }
-
 
     .cabecalhoEstudos {
         flex-direction: column;
@@ -582,21 +545,17 @@ section h2 {
         align-items: flex-start;
     }
 
-
     .acoesEstudos {
         width: 100%;
 
         justify-content: flex-start;
     }
 
-
     .acoesEstudos button {
         flex: 1;
     }
 
-
     .campoAdicionar {
         flex-direction: column;
     }
-
 }
