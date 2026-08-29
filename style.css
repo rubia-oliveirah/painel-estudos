@@ -309,3 +309,15 @@ section h2 {
         flex: 1;
     }
 }
+
+.acoesItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkboxSelecao {
+    width: 18px !important;
+    height: 18px !important;
+    cursor: pointer;
+}
