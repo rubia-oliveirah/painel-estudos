@@ -3,6 +3,9 @@ const botao = document.getElementById("adicionarBtn");
 const lista = document.getElementById("listaEstudos");
 const progresso = document.getElementById("progresso");
 
+const selecionarTodosBtn = document.getElementById("selecionarTodosBtn");
+const excluirSelecionadosBtn = document.getElementById("excluirSelecionadosBtn");
+
 const CHAVE_STORAGE = "conectaSeguroEstudos";
 
 let estudos = JSON.parse(
