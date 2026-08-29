@@ -375,3 +375,127 @@ section h2 {
 .menuOpcoes button:hover {
     background: #f1f5f9;
 }
+/* Organização da seção de estudos */
+section {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.cabecalhoEstudos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.cabecalhoEstudos h2 {
+    margin: 0;
+}
+
+/* Lista de estudos */
+#listaEstudos {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* Cada estudo */
+#listaEstudos li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px 5px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Nome + checkbox de conclusão */
+#listaEstudos li > label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+}
+
+/* Área dos controles da direita */
+.menuAcoes {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 15px;
+}
+
+/* Checkbox de seleção */
+.checkboxSelecao {
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Botão dos três pontinhos */
+.menuBotao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+
+    padding: 0 !important;
+    margin: 0;
+
+    background: transparent !important;
+    border: none !important;
+
+    font-size: 24px;
+    line-height: 1;
+    color: #64748b;
+
+    cursor: pointer;
+}
+
+.menuBotao:hover {
+    background: #f1f5f9 !important;
+    border-radius: 6px;
+}
+
+/* Menu ⋮ */
+.menuOpcoes {
+    position: absolute;
+    right: 0;
+    top: 38px;
+    z-index: 100;
+
+    min-width: 150px;
+
+    background: white;
+    border-radius: 8px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+
+    overflow: hidden;
+}
+
+/* Botões do menu */
+.menuOpcoes button {
+    display: block;
+    width: 100%;
+
+    padding: 10px 14px;
+
+    border: none;
+    background: white;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.menuOpcoes button:hover {
+    background: #f1f5f9;
+}
