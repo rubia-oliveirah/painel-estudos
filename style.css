@@ -54,6 +54,13 @@ button {
     cursor: pointer;
 }
 
+li button {
+    background: transparent;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+}
+
 #listaEstudos {
     list-style: none;
 }
