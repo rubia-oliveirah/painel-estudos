@@ -3,7 +3,7 @@ const botao = document.getElementById("adicionarBtn");
 const lista = document.getElementById("listaEstudos");
 const progresso = document.getElementById("progresso");
 
-const CHAVE_STORAGE = "PaineldeEstudos";
+const CHAVE_STORAGE = "conectaSeguroEstudos";
 
 let estudos = JSON.parse(
     localStorage.getItem(CHAVE_STORAGE)
