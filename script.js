@@ -3,7 +3,11 @@ const botao = document.getElementById("adicionarBtn");
 const lista = document.getElementById("listaEstudos");
 const progresso = document.getElementById("progresso");
 
-const excluirSelecionadosBtn = document.getElementById("excluirSelecionadosBtn");
+const modoSelecaoBtn = document.getElementById("modoSelecaoBtn");
+const marcarTodosBtn = document.getElementById("marcarTodosBtn");
+const excluirSelecionadosBtn = document.getElementById(
+    "excluirSelecionadosBtn"
+);
 
 const CHAVE_STORAGE = "conectaSeguroEstudos";
 
@@ -11,222 +15,660 @@ let estudos = JSON.parse(
     localStorage.getItem(CHAVE_STORAGE)
 ) || [];
 
+let modoSelecao = false;
+
+let selecionados = [];
+
+
+/* =========================
+   LOCAL STORAGE
+========================= */
+
 function salvarEstudos() {
+
     localStorage.setItem(
         CHAVE_STORAGE,
         JSON.stringify(estudos)
     );
+
 }
 
+
+/* =========================
+   MOSTRAR ESTUDOS
+========================= */
+
 function mostrarEstudos() {
+
     lista.innerHTML = "";
 
+
     estudos.forEach(function(estudo, indice) {
+
         const item = document.createElement("li");
+
+
+        /* Área esquerda */
 
         const areaEsquerda = document.createElement("label");
 
-        // Checkbox de conclusão
-        const checkboxConcluido = document.createElement("input");
+        areaEsquerda.className = "areaEstudo";
+
+
+        /* Checkbox de conclusão */
+
+        const checkboxConcluido =
+            document.createElement("input");
+
         checkboxConcluido.type = "checkbox";
-        checkboxConcluido.checked = estudo.concluido;
 
-        checkboxConcluido.addEventListener("change", function() {
-            marcarConcluido(indice);
-        });
+        checkboxConcluido.checked =
+            estudo.concluido;
 
-        const nome = document.createElement("span");
-        nome.textContent = estudo.nome;
+
+        checkboxConcluido.addEventListener(
+            "change",
+            function() {
+
+                marcarConcluido(indice);
+
+            }
+        );
+
+
+        /* Nome */
+
+        const nome =
+            document.createElement("span");
+
+        nome.textContent =
+            estudo.nome;
+
 
         if (estudo.concluido) {
-            nome.className = "estudoConcluido";
+
+            nome.className =
+                "estudoConcluido";
+
         }
 
-        areaEsquerda.appendChild(checkboxConcluido);
-        areaEsquerda.appendChild(nome);
 
-       // Menu de ações
-const areaDireita = document.createElement("div");
-areaDireita.className = "menuAcoes";
+        areaEsquerda.appendChild(
+            checkboxConcluido
+        );
 
-const menuBotao = document.createElement("button");
-menuBotao.textContent = "⋮";
-menuBotao.className = "menuBotao";
-menuBotao.title = "Mais opções";
+        areaEsquerda.appendChild(
+            nome
+        );
 
-const menu = document.createElement("div");
-menu.className = "menuOpcoes";
-menu.style.display = "none";
 
-// Botão Editar
-const editar = document.createElement("button");
-editar.textContent = "✏️ Editar";
+        /* Área direita */
 
-editar.addEventListener("click", function() {
-    editarEstudo(indice);
-});
+        const areaDireita =
+            document.createElement("div");
 
-// Botão Excluir
-const excluir = document.createElement("button");
-excluir.textContent = "🗑️ Excluir";
+        areaDireita.className =
+            "areaDireita";
 
-excluir.addEventListener("click", function() {
-    excluirEstudo(indice);
-});
 
-menu.appendChild(editar);
-menu.appendChild(excluir);
+        /* Checkbox de seleção */
 
-menuBotao.addEventListener("click", function(evento) {
-    evento.stopPropagation();
+        if (modoSelecao) {
 
-    const menusAbertos = document.querySelectorAll(".menuOpcoes");
+            const checkboxSelecao =
+                document.createElement("input");
 
-    menusAbertos.forEach(function(outroMenu) {
-        if (outroMenu !== menu) {
-            outroMenu.style.display = "none";
+            checkboxSelecao.type =
+                "checkbox";
+
+            checkboxSelecao.className =
+                "checkboxSelecao";
+
+            checkboxSelecao.checked =
+                selecionados.includes(indice);
+
+
+            checkboxSelecao.addEventListener(
+                "change",
+                function() {
+
+                    if (checkboxSelecao.checked) {
+
+                        if (!selecionados.includes(indice)) {
+
+                            selecionados.push(indice);
+
+                        }
+
+                    } else {
+
+                        selecionados =
+                            selecionados.filter(
+                                function(item) {
+
+                                    return item !== indice;
+
+                                }
+                            );
+
+                    }
+
+
+                    atualizarControlesSelecao();
+
+                }
+            );
+
+
+            areaDireita.appendChild(
+                checkboxSelecao
+            );
+
         }
+
+
+        /* Menu ⋮ */
+
+        const menuAcoes =
+            document.createElement("div");
+
+        menuAcoes.className =
+            "menuAcoes";
+
+
+        const menuBotao =
+            document.createElement("button");
+
+        menuBotao.textContent =
+            "⋮";
+
+        menuBotao.className =
+            "menuBotao";
+
+        menuBotao.title =
+            "Mais opções";
+
+
+        const menu =
+            document.createElement("div");
+
+        menu.className =
+            "menuOpcoes";
+
+        menu.style.display =
+            "none";
+
+
+        /* Editar */
+
+        const editar =
+            document.createElement("button");
+
+        editar.textContent =
+            "✏️ Editar";
+
+
+        editar.addEventListener(
+            "click",
+            function() {
+
+                editarEstudo(indice);
+
+                menu.style.display =
+                    "none";
+
+            }
+        );
+
+
+        /* Excluir */
+
+        const excluir =
+            document.createElement("button");
+
+        excluir.textContent =
+            "🗑️ Excluir";
+
+
+        excluir.addEventListener(
+            "click",
+            function() {
+
+                excluirEstudo(indice);
+
+                menu.style.display =
+                    "none";
+
+            }
+        );
+
+
+        menu.appendChild(
+            editar
+        );
+
+        menu.appendChild(
+            excluir
+        );
+
+
+        menuBotao.addEventListener(
+            "click",
+            function(evento) {
+
+                evento.stopPropagation();
+
+
+                const menusAbertos =
+                    document.querySelectorAll(
+                        ".menuOpcoes"
+                    );
+
+
+                menusAbertos.forEach(
+                    function(outroMenu) {
+
+                        if (outroMenu !== menu) {
+
+                            outroMenu.style.display =
+                                "none";
+
+                        }
+
+                    }
+                );
+
+
+                menu.style.display =
+                    menu.style.display === "none"
+                        ? "block"
+                        : "none";
+
+            }
+        );
+
+
+        menuAcoes.appendChild(
+            menuBotao
+        );
+
+        menuAcoes.appendChild(
+            menu
+        );
+
+
+        areaDireita.appendChild(
+            menuAcoes
+        );
+
+
+        item.appendChild(
+            areaEsquerda
+        );
+
+        item.appendChild(
+            areaDireita
+        );
+
+
+        lista.appendChild(
+            item
+        );
+
     });
 
-    menu.style.display =
-        menu.style.display === "none" ? "block" : "none";
-});
 
-areaDireita.appendChild(menuBotao);
-areaDireita.appendChild(menu);
-
-item.appendChild(areaEsquerda);
-item.appendChild(areaDireita);
-
-        lista.appendChild(item);
-    });
+    atualizarControlesSelecao();
 
     atualizarProgresso();
+
 }
 
+
+/* =========================
+   ADICIONAR ESTUDO
+========================= */
+
 function adicionarEstudo() {
-    const nome = input.value.trim();
+
+    const nome =
+        input.value.trim();
+
 
     if (nome === "") {
-        alert("Digite um assunto para adicionar.");
+
+        alert(
+            "Digite um assunto para adicionar."
+        );
+
         return;
+
     }
 
+
     estudos.push({
+
         nome: nome,
+
         concluido: false
+
     });
 
+
     salvarEstudos();
+
 
     input.value = "";
 
+
     mostrarEstudos();
+
 }
+
+
+/* =========================
+   CONCLUIR ESTUDO
+========================= */
 
 function marcarConcluido(indice) {
-    estudos[indice].concluido = !estudos[indice].concluido;
+
+    estudos[indice].concluido =
+        !estudos[indice].concluido;
+
 
     salvarEstudos();
 
+
     mostrarEstudos();
+
 }
+
+
+/* =========================
+   EDITAR ESTUDO
+========================= */
 
 function editarEstudo(indice) {
-    const novoNome = prompt(
-        "Digite o novo nome do assunto:",
-        estudos[indice].nome
-    );
+
+    const novoNome =
+        prompt(
+            "Digite o novo nome do assunto:",
+            estudos[indice].nome
+        );
+
 
     if (novoNome === null) {
+
         return;
+
     }
 
-    const nomeLimpo = novoNome.trim();
+
+    const nomeLimpo =
+        novoNome.trim();
+
 
     if (nomeLimpo === "") {
-        alert("O nome do assunto não pode ficar vazio.");
+
+        alert(
+            "O nome do assunto não pode ficar vazio."
+        );
+
         return;
+
     }
 
-    estudos[indice].nome = nomeLimpo;
+
+    estudos[indice].nome =
+        nomeLimpo;
+
 
     salvarEstudos();
+
+
     mostrarEstudos();
+
 }
+
+
+/* =========================
+   EXCLUIR UM ESTUDO
+========================= */
 
 function excluirEstudo(indice) {
-    const confirmar = confirm(
-        'Tem certeza que deseja excluir "' +
-        estudos[indice].nome +
-        '"?'
-    );
+
+    const confirmar =
+        confirm(
+            'Tem certeza que deseja excluir "' +
+            estudos[indice].nome +
+            '"?'
+        );
+
 
     if (!confirmar) {
+
         return;
+
     }
 
-    estudos.splice(indice, 1);
+
+    estudos.splice(
+        indice,
+        1
+    );
+
+
+    selecionados = [];
+
 
     salvarEstudos();
 
+
     mostrarEstudos();
+
 }
 
-function selecionarTodos() {
-    const checkboxes = document.querySelectorAll(".checkboxSelecao");
+
+/* =========================
+   MODO DE SELEÇÃO
+========================= */
+
+function alternarModoSelecao() {
+
+    modoSelecao =
+        !modoSelecao;
+
+
+    selecionados = [];
+
+
+    atualizarBotaoModoSelecao();
+
+
+    mostrarEstudos();
+
+}
+
+
+/* =========================
+   BOTÃO SELECIONAR / SAIR
+========================= */
+
+function atualizarBotaoModoSelecao() {
+
+    if (modoSelecao) {
+
+        modoSelecaoBtn.textContent =
+            "Cancelar";
+
+    } else {
+
+        modoSelecaoBtn.textContent =
+            "Selecionar";
+
+    }
+
+}
+
+
+/* =========================
+   MARCAR / DESMARCAR TODOS
+========================= */
+
+function marcarTodos() {
+
+    if (estudos.length === 0) {
+
+        return;
+
+    }
+
 
     const todosSelecionados =
-        checkboxes.length > 0 &&
-        Array.from(checkboxes).every(function(checkbox) {
-            return checkbox.checked;
-        });
+        selecionados.length === estudos.length;
 
-    checkboxes.forEach(function(checkbox) {
-        checkbox.checked = !todosSelecionados;
-    });
 
-atualizarBotaoSelecionar();
+    if (todosSelecionados) {
+
+        selecionados = [];
+
+    } else {
+
+        selecionados =
+            estudos.map(
+                function(estudo, indice) {
+
+                    return indice;
+
+                }
+            );
+
+    }
+
+
+    atualizarControlesSelecao();
+
+    mostrarEstudos();
+
 }
 
-function atualizarBotaoSelecionar() {
-    const checkboxes = document.querySelectorAll(".checkboxSelecao");
 
-    const todosSelecionados =
-        checkboxes.length > 0 &&
-        Array.from(checkboxes).every(function(checkbox) {
-            return checkbox.checked;
-        });
+/* =========================
+   CONTROLES DE SELEÇÃO
+========================= */
 
-    selecionarTodosBtn.textContent = todosSelecionados
-        ? "Desmarcar todos"
-        : "Selecionar todos";
+function atualizarControlesSelecao() {
+
+    if (!modoSelecao) {
+
+        marcarTodosBtn.style.display =
+            "none";
+
+        excluirSelecionadosBtn.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    marcarTodosBtn.style.display =
+        "inline-block";
+
+
+    if (
+        estudos.length > 0 &&
+        selecionados.length === estudos.length
+    ) {
+
+        marcarTodosBtn.textContent =
+            "Desmarcar todos";
+
+    } else {
+
+        marcarTodosBtn.textContent =
+            "Marcar todos";
+
+    }
+
+
+    if (selecionados.length > 0) {
+
+        excluirSelecionadosBtn.style.display =
+            "inline-block";
+
+        excluirSelecionadosBtn.textContent =
+            "Excluir selecionados";
+
+    } else {
+
+        excluirSelecionadosBtn.style.display =
+            "none";
+
+    }
+
 }
+
+
+/* =========================
+   EXCLUIR SELECIONADOS
+========================= */
 
 function excluirSelecionados() {
-    if (estudos.length === 0) {
-        alert("Não há assuntos para excluir.");
+
+    if (selecionados.length === 0) {
+
         return;
+
     }
 
-    const confirmar = confirm(
-        "Tem certeza que deseja excluir todos os " +
-        estudos.length +
-        " assunto(s)?"
-    );
+
+    const confirmar =
+        confirm(
+            "Tem certeza que deseja excluir " +
+            selecionados.length +
+            " assunto(s)?"
+        );
+
 
     if (!confirmar) {
+
         return;
+
     }
 
-    estudos = [];
+
+    estudos =
+        estudos.filter(
+            function(estudo, indice) {
+
+                return !selecionados.includes(
+                    indice
+                );
+
+            }
+        );
+
+
+    selecionados = [];
+
 
     salvarEstudos();
+
+
     mostrarEstudos();
+
 }
 
+
+/* =========================
+   PROGRESSO
+========================= */
+
 function atualizarProgresso() {
+
     if (estudos.length === 0) {
+
         progresso.innerHTML =
             '<div class="circuloProgresso">' +
                 '<strong>0%</strong>' +
@@ -234,49 +676,93 @@ function atualizarProgresso() {
             '</div>';
 
         return;
+
     }
 
-    const concluidos = estudos.filter(function(estudo) {
-        return estudo.concluido;
-    }).length;
 
-    const porcentagem = Math.round(
-        (concluidos / estudos.length) * 100
-    );
+    const concluidos =
+        estudos.filter(
+            function(estudo) {
+
+                return estudo.concluido;
+
+            }
+        ).length;
+
+
+    const porcentagem =
+        Math.round(
+            (concluidos / estudos.length) * 100
+        );
+
 
     progresso.innerHTML =
-        '<div class="circuloProgresso" style="--progresso: ' +
-        porcentagem +
-        '%;">' +
-            '<strong>' + porcentagem + '%</strong>' +
+        '<div class="circuloProgresso">' +
+            '<strong>' +
+                porcentagem +
+                '%' +
+            '</strong>' +
             '<span>concluído</span>' +
         '</div>';
 
+
     if (porcentagem === 100) {
+
         progresso.innerHTML +=
             '<div class="mensagemParabens">' +
                 '<span>✓</span>' +
                 ' Parabéns! Você concluiu todos os assuntos!' +
             '</div>';
+
     }
+
 }
 
-botao.addEventListener("click", adicionarEstudo);
 
-input.addEventListener("keydown", function(evento) {
-    if (evento.key === "Enter") {
-        adicionarEstudo();
-    }
-});
+/* =========================
+   EVENTOS
+========================= */
 
-selecionarTodosBtn.addEventListener(
+botao.addEventListener(
     "click",
-    selecionarTodos
+    adicionarEstudo
 );
+
+
+input.addEventListener(
+    "keydown",
+    function(evento) {
+
+        if (evento.key === "Enter") {
+
+            adicionarEstudo();
+
+        }
+
+    }
+);
+
+
+modoSelecaoBtn.addEventListener(
+    "click",
+    alternarModoSelecao
+);
+
+
+marcarTodosBtn.addEventListener(
+    "click",
+    marcarTodos
+);
+
 
 excluirSelecionadosBtn.addEventListener(
     "click",
     excluirSelecionados
 );
+
+
+/* =========================
+   INICIAR
+========================= */
 
 mostrarEstudos();
