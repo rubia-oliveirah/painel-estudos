@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Painel de Estudos</title>
+    <title>ConectaSeguro</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,17 +13,20 @@
 <body>
 
     <header>
-        <h1>Estudar né 🫠</h1>
-        <p>Organize suas matérias com praticidade.</p>
+        <h1>🛡️ ConectaSeguro</h1>
+        <p>Aprenda a navegar na internet com mais segurança.</p>
     </header>
+
 
     <main>
 
+        <!-- ADICIONAR ASSUNTO -->
         <section class="secaoAdicionar">
 
-            <h2>Adicionar assunto ✏️</h2>
+            <h2>➕ Adicionar assunto</h2>
 
             <div class="campoAdicionar">
+
                 <input
                     type="text"
                     id="assuntoInput"
@@ -33,16 +36,18 @@
                 <button id="adicionarBtn">
                     Adicionar
                 </button>
+
             </div>
 
         </section>
 
 
+        <!-- MEUS ESTUDOS -->
         <section class="secaoEstudos">
 
             <div class="cabecalhoEstudos">
 
-                <h2>Meus estudos 📚</h2>
+                <h2>📚 Meus estudos</h2>
 
                 <div class="acoesEstudos">
 
@@ -52,7 +57,6 @@
 
                     <button
                         id="marcarTodosBtn"
-                        class="botaoSelecao"
                         style="display: none;"
                     >
                         Marcar todos
@@ -76,9 +80,10 @@
         </section>
 
 
+        <!-- PROGRESSO -->
         <section class="secaoProgresso">
 
-            <h2>Meu progresso 📊</h2>
+            <h2>📊 Meu progresso</h2>
 
             <div id="progresso">
                 0% concluído
