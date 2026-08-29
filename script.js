@@ -25,13 +25,10 @@ function mostrarEstudos() {
                 ${estudo.nome}
             </label>
 
-            <button 
-                class="btn-lixeira"
-                onclick="excluirEstudo(${indice})"
-                title="Excluir assunto"
-            >
-                🗑️
-            </button>
+            <const excluir = document.createElement("button");
+excluir.innerHTML = "&#128465;";
+excluir.className = "botaoExcluir";
+excluir.title = "Excluir assunto";
         `;
 
         lista.appendChild(item);
