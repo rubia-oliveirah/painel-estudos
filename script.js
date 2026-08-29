@@ -103,7 +103,6 @@ function excluirEstudo(indice) {
 
     mostrarEstudos();
 }
-}
 
 function atualizarProgresso() {
     if (estudos.length === 0) {
