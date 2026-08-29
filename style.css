@@ -469,13 +469,18 @@ section h2 {
 
 
 .circuloProgresso {
-    width: 145px;
+    --porcentagem: 0%;
 
+    width: 145px;
     height: 145px;
 
     border-radius: 50%;
 
-    background: #f8fafc;
+    background:
+        conic-gradient(
+            #22c55e var(--porcentagem),
+            #dbe3ec var(--porcentagem)
+        );
 
     display: flex;
 
@@ -485,7 +490,7 @@ section h2 {
 
     justify-content: center;
 
-    border: 9px solid #22c55e;
+    position: relative;
 }
 
 
