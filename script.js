@@ -126,13 +126,19 @@ function excluirEstudo(indice) {
 }
 
 function selecionarTodos() {
-    const checkboxes = document.querySelectorAll(
-        ".checkboxSelecao"
-    );
+    const checkboxes = document.querySelectorAll(".checkboxSelecao");
+
+    const todosSelecionados =
+        checkboxes.length > 0 &&
+        Array.from(checkboxes).every(function(checkbox) {
+            return checkbox.checked;
+        });
 
     checkboxes.forEach(function(checkbox) {
-        checkbox.checked = true;
+        checkbox.checked = !todosSelecionados;
     });
+
+atualizarBotaoSelecionar();
 }
 
 function excluirSelecionados() {
