@@ -24,7 +24,17 @@ function mostrarEstudos() {
         label.appendChild(checkbox);
         label.appendChild(document.createTextNode(" " + estudo.nome));
 
+        const excluir = document.createElement("button");
+        excluir.textContent = "🗑️";
+        excluir.title = "Excluir assunto";
+
+        excluir.addEventListener("click", function() {
+            excluirEstudo(indice);
+        });
+
         item.appendChild(label);
+        item.appendChild(excluir);
+
         lista.appendChild(item);
     });
 
@@ -51,6 +61,12 @@ function adicionarEstudo() {
 
 function marcarConcluido(indice) {
     estudos[indice].concluido = !estudos[indice].concluido;
+
+    mostrarEstudos();
+}
+
+function excluirEstudo(indice) {
+    estudos.splice(indice, 1);
 
     mostrarEstudos();
 }
