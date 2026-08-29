@@ -3,17 +3,25 @@ const botao = document.getElementById("adicionarBtn");
 const lista = document.getElementById("listaEstudos");
 const progresso = document.getElementById("progresso");
 
-const modoSelecaoBtn = document.getElementById("modoSelecaoBtn");
-const marcarTodosBtn = document.getElementById("marcarTodosBtn");
-const excluirSelecionadosBtn = document.getElementById(
-    "excluirSelecionadosBtn"
-);
+const modoSelecaoBtn =
+    document.getElementById("modoSelecaoBtn");
 
-const CHAVE_STORAGE = "conectaSeguroEstudos";
+const marcarTodosBtn =
+    document.getElementById("marcarTodosBtn");
 
-let estudos = JSON.parse(
-    localStorage.getItem(CHAVE_STORAGE)
-) || [];
+const excluirSelecionadosBtn =
+    document.getElementById("excluirSelecionadosBtn");
+
+
+const CHAVE_STORAGE =
+    "conectaSeguroEstudos";
+
+
+let estudos =
+    JSON.parse(
+        localStorage.getItem(CHAVE_STORAGE)
+    ) || [];
+
 
 let modoSelecao = false;
 
@@ -21,7 +29,7 @@ let selecionados = [];
 
 
 /* =========================
-   LOCAL STORAGE
+   SALVAR
 ========================= */
 
 function salvarEstudos() {
@@ -45,14 +53,17 @@ function mostrarEstudos() {
 
     estudos.forEach(function(estudo, indice) {
 
-        const item = document.createElement("li");
+        const item =
+            document.createElement("li");
 
 
-        /* Área esquerda */
+        /* ÁREA ESQUERDA */
 
-        const areaEsquerda = document.createElement("label");
+        const areaEsquerda =
+            document.createElement("label");
 
-        areaEsquerda.className = "areaEstudo";
+        areaEsquerda.className =
+            "areaEstudo";
 
 
         /* Checkbox de conclusão */
@@ -60,7 +71,8 @@ function mostrarEstudos() {
         const checkboxConcluido =
             document.createElement("input");
 
-        checkboxConcluido.type = "checkbox";
+        checkboxConcluido.type =
+            "checkbox";
 
         checkboxConcluido.checked =
             estudo.concluido;
@@ -102,7 +114,7 @@ function mostrarEstudos() {
         );
 
 
-        /* Área direita */
+        /* ÁREA DIREITA */
 
         const areaDireita =
             document.createElement("div");
@@ -132,11 +144,19 @@ function mostrarEstudos() {
                 "change",
                 function() {
 
-                    if (checkboxSelecao.checked) {
+                    if (
+                        checkboxSelecao.checked
+                    ) {
 
-                        if (!selecionados.includes(indice)) {
+                        if (
+                            !selecionados.includes(
+                                indice
+                            )
+                        ) {
 
-                            selecionados.push(indice);
+                            selecionados.push(
+                                indice
+                            );
 
                         }
 
@@ -167,7 +187,7 @@ function mostrarEstudos() {
         }
 
 
-        /* Menu ⋮ */
+        /* MENU ⋮ */
 
         const menuAcoes =
             document.createElement("div");
@@ -199,7 +219,7 @@ function mostrarEstudos() {
             "none";
 
 
-        /* Editar */
+        /* EDITAR */
 
         const editar =
             document.createElement("button");
@@ -221,7 +241,7 @@ function mostrarEstudos() {
         );
 
 
-        /* Excluir */
+        /* EXCLUIR */
 
         const excluir =
             document.createElement("button");
@@ -252,6 +272,8 @@ function mostrarEstudos() {
         );
 
 
+        /* ABRIR MENU */
+
         menuBotao.addEventListener(
             "click",
             function(evento) {
@@ -268,7 +290,9 @@ function mostrarEstudos() {
                 menusAbertos.forEach(
                     function(outroMenu) {
 
-                        if (outroMenu !== menu) {
+                        if (
+                            outroMenu !== menu
+                        ) {
 
                             outroMenu.style.display =
                                 "none";
@@ -326,7 +350,7 @@ function mostrarEstudos() {
 
 
 /* =========================
-   ADICIONAR ESTUDO
+   ADICIONAR
 ========================= */
 
 function adicionarEstudo() {
@@ -367,7 +391,7 @@ function adicionarEstudo() {
 
 
 /* =========================
-   CONCLUIR ESTUDO
+   CONCLUIR
 ========================= */
 
 function marcarConcluido(indice) {
@@ -385,7 +409,7 @@ function marcarConcluido(indice) {
 
 
 /* =========================
-   EDITAR ESTUDO
+   EDITAR
 ========================= */
 
 function editarEstudo(indice) {
@@ -432,7 +456,7 @@ function editarEstudo(indice) {
 
 
 /* =========================
-   EXCLUIR UM ESTUDO
+   EXCLUIR INDIVIDUAL
 ========================= */
 
 function excluirEstudo(indice) {
@@ -482,29 +506,72 @@ function alternarModoSelecao() {
     selecionados = [];
 
 
-    atualizarBotaoModoSelecao();
-
-
     mostrarEstudos();
 
 }
 
 
 /* =========================
-   BOTÃO SELECIONAR / SAIR
+   CONTROLES
 ========================= */
 
-function atualizarBotaoModoSelecao() {
+function atualizarControlesSelecao() {
 
-    if (modoSelecao) {
-
-        modoSelecaoBtn.textContent =
-            "Cancelar";
-
-    } else {
+    if (!modoSelecao) {
 
         modoSelecaoBtn.textContent =
             "Selecionar";
+
+        marcarTodosBtn.style.display =
+            "none";
+
+        excluirSelecionadosBtn.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    modoSelecaoBtn.textContent =
+        "Cancelar";
+
+
+    marcarTodosBtn.style.display =
+        "inline-block";
+
+
+    /* Todos selecionados */
+
+    if (
+        estudos.length > 0 &&
+        selecionados.length === estudos.length
+    ) {
+
+        marcarTodosBtn.textContent =
+            "Desmarcar todos";
+
+    } else {
+
+        marcarTodosBtn.textContent =
+            "Marcar todos";
+
+    }
+
+
+    /* Excluir */
+
+    if (
+        selecionados.length > 0
+    ) {
+
+        excluirSelecionadosBtn.style.display =
+            "inline-block";
+
+    } else {
+
+        excluirSelecionadosBtn.style.display =
+            "none";
 
     }
 
@@ -512,7 +579,7 @@ function atualizarBotaoModoSelecao() {
 
 
 /* =========================
-   MARCAR / DESMARCAR TODOS
+   MARCAR TODOS
 ========================= */
 
 function marcarTodos() {
@@ -546,66 +613,7 @@ function marcarTodos() {
     }
 
 
-    atualizarControlesSelecao();
-
     mostrarEstudos();
-
-}
-
-
-/* =========================
-   CONTROLES DE SELEÇÃO
-========================= */
-
-function atualizarControlesSelecao() {
-
-    if (!modoSelecao) {
-
-        marcarTodosBtn.style.display =
-            "none";
-
-        excluirSelecionadosBtn.style.display =
-            "none";
-
-        return;
-
-    }
-
-
-    marcarTodosBtn.style.display =
-        "inline-block";
-
-
-    if (
-        estudos.length > 0 &&
-        selecionados.length === estudos.length
-    ) {
-
-        marcarTodosBtn.textContent =
-            "Desmarcar todos";
-
-    } else {
-
-        marcarTodosBtn.textContent =
-            "Marcar todos";
-
-    }
-
-
-    if (selecionados.length > 0) {
-
-        excluirSelecionadosBtn.style.display =
-            "inline-block";
-
-        excluirSelecionadosBtn.textContent =
-            "Excluir selecionados";
-
-    } else {
-
-        excluirSelecionadosBtn.style.display =
-            "none";
-
-    }
 
 }
 
@@ -616,7 +624,9 @@ function atualizarControlesSelecao() {
 
 function excluirSelecionados() {
 
-    if (selecionados.length === 0) {
+    if (
+        selecionados.length === 0
+    ) {
 
         return;
 
@@ -667,7 +677,9 @@ function excluirSelecionados() {
 
 function atualizarProgresso() {
 
-    if (estudos.length === 0) {
+    if (
+        estudos.length === 0
+    ) {
 
         progresso.innerHTML =
             '<div class="circuloProgresso">' +
@@ -706,7 +718,9 @@ function atualizarProgresso() {
         '</div>';
 
 
-    if (porcentagem === 100) {
+    if (
+        porcentagem === 100
+    ) {
 
         progresso.innerHTML +=
             '<div class="mensagemParabens">' +
@@ -733,7 +747,9 @@ input.addEventListener(
     "keydown",
     function(evento) {
 
-        if (evento.key === "Enter") {
+        if (
+            evento.key === "Enter"
+        ) {
 
             adicionarEstudo();
 
