@@ -259,3 +259,53 @@ section h2 {
         height: 190px;
     }
 }
+
+.cabecalhoEstudos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.cabecalhoEstudos h2 {
+    margin: 0;
+}
+
+.acoesEstudos {
+    display: flex;
+    gap: 8px;
+}
+
+.acoesEstudos button {
+    border: none;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    background: #e8eef8;
+    color: #1e40af;
+}
+
+.acoesEstudos button:hover {
+    background: #dbe5f5;
+}
+
+#acima {
+    display: none;
+}
+
+@media (max-width: 700px) {
+    .cabecalhoEstudos {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .acoesEstudos {
+        width: 100%;
+    }
+
+    .acoesEstudos button {
+        flex: 1;
+    }
+}
