@@ -3,34 +3,47 @@ const botao = document.getElementById("adicionarBtn");
 const lista = document.getElementById("listaEstudos");
 const progresso = document.getElementById("progresso");
 
-let estudos = JSON.parse(localStorage.getItem("estudos")) || [];
-
-function salvarEstudos() {
-    localStorage.setItem("estudos", JSON.stringify(estudos));
-}
+let estudos = [];
 
 function mostrarEstudos() {
     lista.innerHTML = "";
 
-    estudos.forEach((estudo, indice) => {
+    estudos.forEach(function(estudo, indice) {
         const item = document.createElement("li");
 
-        item.innerHTML = `
-            <label>
-                <input 
-                    type="checkbox" 
-                    ${estudo.concluido ? "checked" : ""}
-                    onchange="marcarConcluido(${indice})"
-                >
-                ${estudo.nome}
-                
-            </label>
+        const label = document.createElement("label");
 
-            const excluir = document.createElement("button");
-excluir.textContent = "🗑️";
-excluir.title = "Excluir assunto";
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = estudo.concluido;
 
-}
+        checkbox.addEventListener("change", function() {
+            marcarConcluido(indice);
+        });
+
+        const nome = document.createElement("span");
+        nome.textContent = estudo.nome;
+
+        if (estudo.concluido) {
+            nome.className = "estudoConcluido";
+        }
+
+        label.appendChild(checkbox);
+        label.appendChild(nome);
+
+        const excluir = document.createElement("button");
+        excluir.innerHTML = "&#128465;";
+        excluir.className = "botaoExcluir";
+        excluir.title = "Excluir assunto";
+        excluir.setAttribute("aria-label", "Excluir " + estudo.nome);
+
+        excluir.addEventListener("click", function() {
+            excluirEstudo(indice);
+        });
+
+        item.appendChild(label);
+        item.appendChild(excluir);
+
         lista.appendChild(item);
     });
 
@@ -50,8 +63,6 @@ function adicionarEstudo() {
         concluido: false
     });
 
-    salvarEstudos();
-
     input.value = "";
 
     mostrarEstudos();
@@ -60,36 +71,47 @@ function adicionarEstudo() {
 function marcarConcluido(indice) {
     estudos[indice].concluido = !estudos[indice].concluido;
 
-    salvarEstudos();
-
     mostrarEstudos();
 }
 
 function excluirEstudo(indice) {
     estudos.splice(indice, 1);
 
-    salvarEstudos();
-
     mostrarEstudos();
 }
 
 function atualizarProgresso() {
     if (estudos.length === 0) {
-        progresso.textContent = "0% concluído";
+        progresso.innerHTML =
+            '<div class="circuloProgresso">' +
+                '<strong>0%</strong>' +
+                '<span>concluído</span>' +
+            '</div>';
+
         return;
     }
 
-    const concluidos = estudos.filter(
-        estudo => estudo.concluido
-    ).length;
+    const concluidos = estudos.filter(function(estudo) {
+        return estudo.concluido;
+    }).length;
 
     const porcentagem = Math.round(
         (concluidos / estudos.length) * 100
     );
 
-    progresso.textContent = `${porcentagem}% concluído`;
+    progresso.innerHTML =
+        '<div class="circuloProgresso" style="--progresso: ' + porcentagem + '%;">' +
+            '<strong>' + porcentagem + '%</strong>' +
+            '<span>concluído</span>' +
+        '</div>';
+
+    if (porcentagem === 100) {
+        progresso.innerHTML +=
+            '<div class="mensagemParabens">' +
+                '<span>✓</span>' +
+                ' Parabéns! Você concluiu todos os assuntos!' +
+            '</div>';
+    }
 }
 
 botao.addEventListener("click", adicionarEstudo);
-
-mostrarEstudos();
