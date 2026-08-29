@@ -66,7 +66,12 @@ function adicionarEstudo() {
     if (nome === "") {
         alert("Digite um assunto para adicionar.");
         return;
+    input.addEventListener("keydown", function(evento) {
+    if (evento.key === "Enter") {
+        adicionarEstudo();
     }
+});
+    
 
     estudos.push({
         nome: nome,
