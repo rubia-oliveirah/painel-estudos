@@ -467,7 +467,6 @@ section h2 {
     gap: 20px;
 }
 
-
 .circuloProgresso {
     --porcentagem: 0%;
 
@@ -476,11 +475,12 @@ section h2 {
 
     border-radius: 50%;
 
-    background:
-        conic-gradient(
-            #22c55e var(--porcentagem),
-            #dbe3ec var(--porcentagem)
-        );
+    background: conic-gradient(
+        #22c55e 0%,
+        #22c55e var(--porcentagem),
+        #dbe3ec var(--porcentagem),
+        #dbe3ec 100%
+    );
 
     display: flex;
 
@@ -493,6 +493,25 @@ section h2 {
     position: relative;
 }
 
+.circuloProgresso::before {
+    content: "";
+
+    position: absolute;
+
+    width: 127px;
+    height: 127px;
+
+    border-radius: 50%;
+
+    background: #f8fafc;
+}
+
+.circuloProgresso strong,
+.circuloProgresso span {
+    position: relative;
+
+    z-index: 1;
+}
 
 .circuloProgresso strong {
     font-size: 30px;
