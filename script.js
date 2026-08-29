@@ -3,8 +3,9 @@ const botao = document.getElementById("adicionarBtn");
 const lista = document.getElementById("listaEstudos");
 const progresso = document.getElementById("progresso");
 
-const selecionarTodosBtn = document.getElementById("selecionarTodosBtn");
-const excluirSelecionadosBtn = document.getElementById("excluirSelecionadosBtn");
+const excluirSelecionadosBtn = document.getElementById(
+    "excluirSelecionadosBtn"
+);
 
 const CHAVE_STORAGE = "conectaSeguroEstudos";
 
@@ -25,9 +26,10 @@ function mostrarEstudos() {
     estudos.forEach(function(estudo, indice) {
         const item = document.createElement("li");
 
+        /* Área esquerda */
         const areaEsquerda = document.createElement("label");
 
-        // Checkbox de conclusão
+        /* Checkbox de conclusão */
         const checkboxConcluido = document.createElement("input");
         checkboxConcluido.type = "checkbox";
         checkboxConcluido.checked = estudo.concluido;
@@ -46,62 +48,83 @@ function mostrarEstudos() {
         areaEsquerda.appendChild(checkboxConcluido);
         areaEsquerda.appendChild(nome);
 
-       // Menu de ações
-const areaDireita = document.createElement("div");
-areaDireita.className = "menuAcoes";
+        /* Área direita */
+        const areaDireita = document.createElement("div");
+        areaDireita.className = "menuAcoes";
 
-const menuBotao = document.createElement("button");
-menuBotao.textContent = "⋮";
-menuBotao.className = "menuBotao";
-menuBotao.title = "Mais opções";
+        /* Checkbox de seleção para exclusão */
+        const selecionar = document.createElement("input");
+        selecionar.type = "checkbox";
+        selecionar.className = "checkboxSelecao";
+        selecionar.dataset.indice = indice;
+        selecionar.title = "Selecionar assunto";
 
-const menu = document.createElement("div");
-menu.className = "menuOpcoes";
-menu.style.display = "none";
+        selecionar.addEventListener("change", function() {
+            atualizarBotaoExcluir();
+        });
 
-// Botão Editar
-const editar = document.createElement("button");
-editar.textContent = "✏️ Editar";
+        /* Botão de três pontos */
+        const menuBotao = document.createElement("button");
+        menuBotao.textContent = "⋮";
+        menuBotao.className = "menuBotao";
+        menuBotao.title = "Mais opções";
 
-editar.addEventListener("click", function() {
-    editarEstudo(indice);
-});
+        /* Menu */
+        const menu = document.createElement("div");
+        menu.className = "menuOpcoes";
+        menu.style.display = "none";
 
-// Botão Excluir
-const excluir = document.createElement("button");
-excluir.textContent = "🗑️ Excluir";
+        /* Botão Editar */
+        const editar = document.createElement("button");
+        editar.textContent = "✏️ Editar";
 
-excluir.addEventListener("click", function() {
-    excluirEstudo(indice);
-});
+        editar.addEventListener("click", function() {
+            editarEstudo(indice);
+            menu.style.display = "none";
+        });
 
-menu.appendChild(editar);
-menu.appendChild(excluir);
+        /* Botão Excluir */
+        const excluir = document.createElement("button");
+        excluir.textContent = "🗑️ Excluir";
 
-menuBotao.addEventListener("click", function(evento) {
-    evento.stopPropagation();
+        excluir.addEventListener("click", function() {
+            excluirEstudo(indice);
+            menu.style.display = "none";
+        });
 
-    const menusAbertos = document.querySelectorAll(".menuOpcoes");
+        menu.appendChild(editar);
+        menu.appendChild(excluir);
 
-    menusAbertos.forEach(function(outroMenu) {
-        if (outroMenu !== menu) {
-            outroMenu.style.display = "none";
-        }
-    });
+        /* Abrir/fechar menu */
+        menuBotao.addEventListener("click", function(evento) {
+            evento.stopPropagation();
 
-    menu.style.display =
-        menu.style.display === "none" ? "block" : "none";
-});
+            const menusAbertos =
+                document.querySelectorAll(".menuOpcoes");
 
-areaDireita.appendChild(menuBotao);
-areaDireita.appendChild(menu);
+            menusAbertos.forEach(function(outroMenu) {
+                if (outroMenu !== menu) {
+                    outroMenu.style.display = "none";
+                }
+            });
 
-item.appendChild(areaEsquerda);
-item.appendChild(areaDireita);
+            menu.style.display =
+                menu.style.display === "none"
+                    ? "block"
+                    : "none";
+        });
+
+        areaDireita.appendChild(selecionar);
+        areaDireita.appendChild(menuBotao);
+        areaDireita.appendChild(menu);
+
+        item.appendChild(areaEsquerda);
+        item.appendChild(areaDireita);
 
         lista.appendChild(item);
     });
 
+    atualizarBotaoExcluir();
     atualizarProgresso();
 }
 
@@ -126,7 +149,8 @@ function adicionarEstudo() {
 }
 
 function marcarConcluido(indice) {
-    estudos[indice].concluido = !estudos[indice].concluido;
+    estudos[indice].concluido =
+        !estudos[indice].concluido;
 
     salvarEstudos();
 
@@ -153,6 +177,7 @@ function editarEstudo(indice) {
     estudos[indice].nome = nomeLimpo;
 
     salvarEstudos();
+
     mostrarEstudos();
 }
 
@@ -174,55 +199,64 @@ function excluirEstudo(indice) {
     mostrarEstudos();
 }
 
-function selecionarTodos() {
-    const checkboxes = document.querySelectorAll(".checkboxSelecao");
+function atualizarBotaoExcluir() {
+    const checkboxes =
+        document.querySelectorAll(".checkboxSelecao");
 
-    const todosSelecionados =
-        checkboxes.length > 0 &&
-        Array.from(checkboxes).every(function(checkbox) {
-            return checkbox.checked;
-        });
+    let quantidadeSelecionada = 0;
 
     checkboxes.forEach(function(checkbox) {
-        checkbox.checked = !todosSelecionados;
+        if (checkbox.checked) {
+            quantidadeSelecionada++;
+        }
     });
 
-atualizarBotaoSelecionar();
-}
+    if (quantidadeSelecionada >= 2) {
+        excluirSelecionadosBtn.style.display = "block";
 
-function atualizarBotaoSelecionar() {
-    const checkboxes = document.querySelectorAll(".checkboxSelecao");
-
-    const todosSelecionados =
-        checkboxes.length > 0 &&
-        Array.from(checkboxes).every(function(checkbox) {
-            return checkbox.checked;
-        });
-
-    selecionarTodosBtn.textContent = todosSelecionados
-        ? "Desmarcar todos"
-        : "Selecionar todos";
+        excluirSelecionadosBtn.textContent =
+            "Excluir " +
+            quantidadeSelecionada +
+            " selecionados";
+    } else {
+        excluirSelecionadosBtn.style.display = "none";
+    }
 }
 
 function excluirSelecionados() {
-    if (estudos.length === 0) {
-        alert("Não há assuntos para excluir.");
+    const checkboxes =
+        document.querySelectorAll(".checkboxSelecao");
+
+    const indicesSelecionados = [];
+
+    checkboxes.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            indicesSelecionados.push(
+                Number(checkbox.dataset.indice)
+            );
+        }
+    });
+
+    if (indicesSelecionados.length < 2) {
         return;
     }
 
     const confirmar = confirm(
-        "Tem certeza que deseja excluir todos os " +
-        estudos.length +
-        " assunto(s)?"
+        "Tem certeza que deseja excluir " +
+        indicesSelecionados.length +
+        " assuntos?"
     );
 
     if (!confirmar) {
         return;
     }
 
-    estudos = [];
+    estudos = estudos.filter(function(estudo, indice) {
+        return !indicesSelecionados.includes(indice);
+    });
 
     salvarEstudos();
+
     mostrarEstudos();
 }
 
@@ -249,7 +283,10 @@ function atualizarProgresso() {
         '<div class="circuloProgresso" style="--progresso: ' +
         porcentagem +
         '%;">' +
-            '<strong>' + porcentagem + '%</strong>' +
+            '<strong>' +
+                porcentagem +
+                '%' +
+            '</strong>' +
             '<span>concluído</span>' +
         '</div>';
 
@@ -262,22 +299,27 @@ function atualizarProgresso() {
     }
 }
 
-botao.addEventListener("click", adicionarEstudo);
-
-input.addEventListener("keydown", function(evento) {
-    if (evento.key === "Enter") {
-        adicionarEstudo();
-    }
-});
-
-selecionarTodosBtn.addEventListener(
+/* Botão Adicionar */
+botao.addEventListener(
     "click",
-    selecionarTodos
+    adicionarEstudo
 );
 
+/* Tecla Enter */
+input.addEventListener(
+    "keydown",
+    function(evento) {
+        if (evento.key === "Enter") {
+            adicionarEstudo();
+        }
+    }
+);
+
+/* Excluir selecionados */
 excluirSelecionadosBtn.addEventListener(
     "click",
     excluirSelecionados
 );
 
+/* Carregar estudos salvos */
 mostrarEstudos();
