@@ -1,4 +1,3 @@
-```javascript
 const input = document.getElementById("assuntoInput");
 const botao = document.getElementById("adicionarBtn");
 const lista = document.getElementById("listaEstudos");
@@ -9,20 +8,23 @@ let estudos = [];
 function mostrarEstudos() {
     lista.innerHTML = "";
 
-    estudos.forEach((estudo, indice) => {
+    estudos.forEach(function(estudo, indice) {
         const item = document.createElement("li");
 
-        item.innerHTML = `
-            <label>
-                <input 
-                    type="checkbox" 
-                    ${estudo.concluido ? "checked" : ""}
-                    onchange="marcarConcluido(${indice})"
-                >
-                ${estudo.nome}
-            </label>
-        `;
+        const label = document.createElement("label");
 
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = estudo.concluido;
+
+        checkbox.addEventListener("change", function() {
+            marcarConcluido(indice);
+        });
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(" " + estudo.nome));
+
+        item.appendChild(label);
         lista.appendChild(item);
     });
 
@@ -59,14 +61,15 @@ function atualizarProgresso() {
         return;
     }
 
-    const concluidos = estudos.filter(estudo => estudo.concluido).length;
+    const concluidos = estudos.filter(function(estudo) {
+        return estudo.concluido;
+    }).length;
 
     const porcentagem = Math.round(
         (concluidos / estudos.length) * 100
     );
 
-    progresso.textContent = `${porcentagem}% concluído`;
+    progresso.textContent = porcentagem + "% concluído";
 }
 
 botao.addEventListener("click", adicionarEstudo);
-```
