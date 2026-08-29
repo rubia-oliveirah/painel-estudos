@@ -3,37 +3,36 @@ const botao = document.getElementById("adicionarBtn");
 const lista = document.getElementById("listaEstudos");
 const progresso = document.getElementById("progresso");
 
-let estudos = [];
+let estudos = JSON.parse(localStorage.getItem("estudos")) || [];
+
+function salvarEstudos() {
+    localStorage.setItem("estudos", JSON.stringify(estudos));
+}
 
 function mostrarEstudos() {
     lista.innerHTML = "";
 
-    estudos.forEach(function(estudo, indice) {
+    estudos.forEach((estudo, indice) => {
         const item = document.createElement("li");
 
-        const label = document.createElement("label");
+        item.innerHTML = `
+            <label>
+                <input 
+                    type="checkbox" 
+                    ${estudo.concluido ? "checked" : ""}
+                    onchange="marcarConcluido(${indice})"
+                >
+                ${estudo.nome}
+            </label>
 
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.checked = estudo.concluido;
-
-        checkbox.addEventListener("change", function() {
-            marcarConcluido(indice);
-        });
-
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(" " + estudo.nome));
-
-        const excluir = document.createElement("button");
-        excluir.textContent = "🗑️";
-        excluir.title = "Excluir assunto";
-
-        excluir.addEventListener("click", function() {
-            excluirEstudo(indice);
-        });
-
-        item.appendChild(label);
-        item.appendChild(excluir);
+            <button 
+                class="btn-lixeira"
+                onclick="excluirEstudo(${indice})"
+                title="Excluir assunto"
+            >
+                🗑️
+            </button>
+        `;
 
         lista.appendChild(item);
     });
@@ -54,6 +53,8 @@ function adicionarEstudo() {
         concluido: false
     });
 
+    salvarEstudos();
+
     input.value = "";
 
     mostrarEstudos();
@@ -62,11 +63,15 @@ function adicionarEstudo() {
 function marcarConcluido(indice) {
     estudos[indice].concluido = !estudos[indice].concluido;
 
+    salvarEstudos();
+
     mostrarEstudos();
 }
 
 function excluirEstudo(indice) {
     estudos.splice(indice, 1);
+
+    salvarEstudos();
 
     mostrarEstudos();
 }
@@ -77,15 +82,17 @@ function atualizarProgresso() {
         return;
     }
 
-    const concluidos = estudos.filter(function(estudo) {
-        return estudo.concluido;
-    }).length;
+    const concluidos = estudos.filter(
+        estudo => estudo.concluido
+    ).length;
 
     const porcentagem = Math.round(
         (concluidos / estudos.length) * 100
     );
 
-    progresso.textContent = porcentagem + "% concluído";
+    progresso.textContent = `${porcentagem}% concluído`;
 }
 
 botao.addEventListener("click", adicionarEstudo);
+
+mostrarEstudos();
