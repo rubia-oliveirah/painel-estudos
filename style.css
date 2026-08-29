@@ -321,3 +321,57 @@ section h2 {
     height: 18px !important;
     cursor: pointer;
 }
+
+.menuAcoes {
+    position: relative;
+}
+
+.menuBotao {
+    background: transparent !important;
+    border: none !important;
+    padding: 4px 8px !important;
+    font-size: 26px;
+    line-height: 1;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.menuBotao:hover {
+    background: #f1f5f9 !important;
+    color: #172554;
+}
+
+.menuOpcoes {
+    position: absolute;
+    right: 0;
+    top: 35px;
+    z-index: 10;
+
+    min-width: 140px;
+
+    background: white;
+    border-radius: 10px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+
+    overflow: hidden;
+}
+
+.menuOpcoes button {
+    display: block;
+    width: 100%;
+
+    padding: 12px 15px;
+
+    border: none;
+    background: white;
+
+    text-align: left;
+
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.menuOpcoes button:hover {
+    background: #f1f5f9;
+}
