@@ -499,3 +499,19 @@ section {
 .menuOpcoes button:hover {
     background: #f1f5f9;
 }
+.cabecalhoEstudos {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.cabecalhoEstudos h2 {
+    margin: 0 0 20px 0;
+}
+
+.acoesEstudos {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 15px;
+}
