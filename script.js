@@ -56,6 +56,9 @@ function mostrarEstudos() {
         selecionar.className = "checkboxSelecao";
         selecionar.dataset.indice = indice;
         selecionar.title = "Selecionar para excluir";
+        selecionar.addEventListener("change", function() {
+    atualizarBotaoSelecionar();
+});
 
         // Botão de lixeira individual
         const excluir = document.createElement("button");
@@ -139,6 +142,20 @@ function selecionarTodos() {
     });
 
 atualizarBotaoSelecionar();
+}
+
+function atualizarBotaoSelecionar() {
+    const checkboxes = document.querySelectorAll(".checkboxSelecao");
+
+    const todosSelecionados =
+        checkboxes.length > 0 &&
+        Array.from(checkboxes).every(function(checkbox) {
+            return checkbox.checked;
+        });
+
+    selecionarTodosBtn.textContent = todosSelecionados
+        ? "Desmarcar todos"
+        : "Selecionar todos";
 }
 
 function excluirSelecionados() {
