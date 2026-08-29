@@ -3,7 +3,18 @@ const botao = document.getElementById("adicionarBtn");
 const lista = document.getElementById("listaEstudos");
 const progresso = document.getElementById("progresso");
 
-let estudos = [];
+const CHAVE_STORAGE = "conectaSeguroEstudos";
+
+let estudos = JSON.parse(
+    localStorage.getItem(CHAVE_STORAGE)
+) || [];
+
+function salvarEstudos() {
+    localStorage.setItem(
+        CHAVE_STORAGE,
+        JSON.stringify(estudos)
+    );
+}
 
 function mostrarEstudos() {
     lista.innerHTML = "";
@@ -35,7 +46,6 @@ function mostrarEstudos() {
         excluir.innerHTML = "&#128465;";
         excluir.className = "botaoExcluir";
         excluir.title = "Excluir assunto";
-        excluir.setAttribute("aria-label", "Excluir " + estudo.nome);
 
         excluir.addEventListener("click", function() {
             excluirEstudo(indice);
@@ -63,6 +73,8 @@ function adicionarEstudo() {
         concluido: false
     });
 
+    salvarEstudos();
+
     input.value = "";
 
     mostrarEstudos();
@@ -71,11 +83,15 @@ function adicionarEstudo() {
 function marcarConcluido(indice) {
     estudos[indice].concluido = !estudos[indice].concluido;
 
+    salvarEstudos();
+
     mostrarEstudos();
 }
 
 function excluirEstudo(indice) {
     estudos.splice(indice, 1);
+
+    salvarEstudos();
 
     mostrarEstudos();
 }
@@ -100,7 +116,9 @@ function atualizarProgresso() {
     );
 
     progresso.innerHTML =
-        '<div class="circuloProgresso" style="--progresso: ' + porcentagem + '%;">' +
+        '<div class="circuloProgresso" style="--progresso: ' +
+        porcentagem +
+        '%;">' +
             '<strong>' + porcentagem + '%</strong>' +
             '<span>concluído</span>' +
         '</div>';
@@ -115,3 +133,5 @@ function atualizarProgresso() {
 }
 
 botao.addEventListener("click", adicionarEstudo);
+
+mostrarEstudos();
