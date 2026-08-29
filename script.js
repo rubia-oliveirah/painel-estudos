@@ -682,10 +682,15 @@ function atualizarProgresso() {
     ) {
 
         progresso.innerHTML =
-            '<div class="circuloProgresso">' +
-                '<strong>0%</strong>' +
-                '<span>concluído</span>' +
-            '</div>';
+    '<div class="circuloProgresso" style="--porcentagem: ' +
+        porcentagem +
+        '%;">' +
+        '<strong>' +
+            porcentagem +
+            '%' +
+        '</strong>' +
+        '<span>concluído</span>' +
+    '</div>';
 
         return;
 
