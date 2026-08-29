@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Painel de Estudos</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -12,47 +14,83 @@
 
     <header>
         <h1>Estudar né 🫠</h1>
-        <p>Organize suas matérias com praticidade</p>
+        <p>Organize suas matérias com praticidade.</p>
     </header>
 
     <main>
 
-        <section>
-            <h2>Adicionar assunto✏️</h2>
+        <section class="secaoAdicionar">
 
-            <input 
-                type="text" 
-                id="assuntoInput" 
-                placeholder="Digite um assunto..."
-            >
+            <h2>Adicionar assunto ✏️</h2>
 
-            <button id="adicionarBtn">Adicionar</button>
+            <div class="campoAdicionar">
+                <input
+                    type="text"
+                    id="assuntoInput"
+                    placeholder="Digite um assunto..."
+                >
+
+                <button id="adicionarBtn">
+                    Adicionar
+                </button>
+            </div>
+
         </section>
 
-        <section>
-    <div class="cabecalhoEstudos">
-        <h2>Meus estudos📚</h2>
 
-        <div class="acoesEstudos">
-            <button id="excluirSelecionadosBtn" style="display: none;">
-                Excluir selecionados
-        </button>
-    </div>
+        <section class="secaoEstudos">
 
-    <ul id="listaEstudos"></ul>
-</section>
+            <div class="cabecalhoEstudos">
 
-        <section>
-            <h2>Meu progresso📊</h2>
+                <h2>Meus estudos 📚</h2>
 
-            <p id="progresso">0% concluído</p>
+                <div class="acoesEstudos">
+
+                    <button id="modoSelecaoBtn">
+                        Selecionar
+                    </button>
+
+                    <button
+                        id="marcarTodosBtn"
+                        class="botaoSelecao"
+                        style="display: none;"
+                    >
+                        Marcar todos
+                    </button>
+
+                    <button
+                        id="excluirSelecionadosBtn"
+                        class="botaoExcluirSelecionados"
+                        style="display: none;"
+                    >
+                        Excluir selecionados
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <ul id="listaEstudos"></ul>
+
+        </section>
+
+
+        <section class="secaoProgresso">
+
+            <h2>Meu progresso 📊</h2>
+
+            <div id="progresso">
+                0% concluído
+            </div>
+
         </section>
 
     </main>
+
 
     <script src="script.js"></script>
 
 </body>
 
 </html>
-```
