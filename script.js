@@ -46,35 +46,58 @@ function mostrarEstudos() {
         areaEsquerda.appendChild(checkboxConcluido);
         areaEsquerda.appendChild(nome);
 
-        // Área dos botões
-        const areaDireita = document.createElement("div");
-        areaDireita.className = "acoesItem";
+       // Menu de ações
+const areaDireita = document.createElement("div");
+areaDireita.className = "menuAcoes";
 
-        // Checkbox para selecionar para exclusão
-        const selecionar = document.createElement("input");
-        selecionar.type = "checkbox";
-        selecionar.className = "checkboxSelecao";
-        selecionar.dataset.indice = indice;
-        selecionar.title = "Selecionar para excluir";
-        selecionar.addEventListener("change", function() {
-    atualizarBotaoSelecionar();
+const menuBotao = document.createElement("button");
+menuBotao.textContent = "⋮";
+menuBotao.className = "menuBotao";
+menuBotao.title = "Mais opções";
+
+const menu = document.createElement("div");
+menu.className = "menuOpcoes";
+menu.style.display = "none";
+
+// Botão Editar
+const editar = document.createElement("button");
+editar.textContent = "✏️ Editar";
+
+editar.addEventListener("click", function() {
+    editarEstudo(indice);
 });
 
-        // Botão de lixeira individual
-        const excluir = document.createElement("button");
-        excluir.innerHTML = "&#128465;";
-        excluir.className = "botaoExcluir";
-        excluir.title = "Excluir assunto";
+// Botão Excluir
+const excluir = document.createElement("button");
+excluir.textContent = "🗑️ Excluir";
 
-        excluir.addEventListener("click", function() {
-            excluirEstudo(indice);
-        });
+excluir.addEventListener("click", function() {
+    excluirEstudo(indice);
+});
 
-        areaDireita.appendChild(selecionar);
-        areaDireita.appendChild(excluir);
+menu.appendChild(editar);
+menu.appendChild(excluir);
 
-        item.appendChild(areaEsquerda);
-        item.appendChild(areaDireita);
+menuBotao.addEventListener("click", function(evento) {
+    evento.stopPropagation();
+
+    const menusAbertos = document.querySelectorAll(".menuOpcoes");
+
+    menusAbertos.forEach(function(outroMenu) {
+        if (outroMenu !== menu) {
+            outroMenu.style.display = "none";
+        }
+    });
+
+    menu.style.display =
+        menu.style.display === "none" ? "block" : "none";
+});
+
+areaDireita.appendChild(menuBotao);
+areaDireita.appendChild(menu);
+
+item.appendChild(areaEsquerda);
+item.appendChild(areaDireita);
 
         lista.appendChild(item);
     });
@@ -107,6 +130,29 @@ function marcarConcluido(indice) {
 
     salvarEstudos();
 
+    mostrarEstudos();
+}
+
+function editarEstudo(indice) {
+    const novoNome = prompt(
+        "Digite o novo nome do assunto:",
+        estudos[indice].nome
+    );
+
+    if (novoNome === null) {
+        return;
+    }
+
+    const nomeLimpo = novoNome.trim();
+
+    if (nomeLimpo === "") {
+        alert("O nome do assunto não pode ficar vazio.");
+        return;
+    }
+
+    estudos[indice].nome = nomeLimpo;
+
+    salvarEstudos();
     mostrarEstudos();
 }
 
@@ -159,28 +205,14 @@ function atualizarBotaoSelecionar() {
 }
 
 function excluirSelecionados() {
-    const checkboxes = document.querySelectorAll(
-        ".checkboxSelecao"
-    );
-
-    const indicesSelecionados = [];
-
-    checkboxes.forEach(function(checkbox) {
-        if (checkbox.checked) {
-            indicesSelecionados.push(
-                Number(checkbox.dataset.indice)
-            );
-        }
-    });
-
-    if (indicesSelecionados.length === 0) {
-        alert("Selecione pelo menos um assunto para excluir.");
+    if (estudos.length === 0) {
+        alert("Não há assuntos para excluir.");
         return;
     }
 
     const confirmar = confirm(
-        "Tem certeza que deseja excluir " +
-        indicesSelecionados.length +
+        "Tem certeza que deseja excluir todos os " +
+        estudos.length +
         " assunto(s)?"
     );
 
@@ -188,12 +220,9 @@ function excluirSelecionados() {
         return;
     }
 
-    estudos = estudos.filter(function(estudo, indice) {
-        return !indicesSelecionados.includes(indice);
-    });
+    estudos = [];
 
     salvarEstudos();
-
     mostrarEstudos();
 }
 
