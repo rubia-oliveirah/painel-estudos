@@ -66,8 +66,7 @@ function adicionarEstudo() {
     if (nome === "") {
         alert("Digite um assunto para adicionar.");
         return;
-    
-}
+    }
 
     estudos.push({
         nome: nome,
@@ -142,5 +141,11 @@ function atualizarProgresso() {
 }
 
 botao.addEventListener("click", adicionarEstudo);
+
+input.addEventListener("keydown", function(evento) {
+    if (evento.key === "Enter") {
+        adicionarEstudo();
+    }
+});
 
 mostrarEstudos();
