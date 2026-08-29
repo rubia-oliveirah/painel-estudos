@@ -30,6 +30,7 @@ function mostrarEstudos() {
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.checked = estudo.concluido;
+        checkbox.className = "checkboxSelecao";
 
         checkbox.addEventListener("change", function() {
             marcarConcluido(indice);
@@ -60,6 +61,48 @@ function mostrarEstudos() {
         lista.appendChild(item);
     });
 
+function selecionarTodos() {
+    const checkboxes = document.querySelectorAll(".checkboxSelecao");
+
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = true;
+    });
+}
+
+function excluirSelecionados() {
+    const checkboxes = document.querySelectorAll(".checkboxSelecao");
+
+    const selecionados = [];
+
+    checkboxes.forEach(function(checkbox, indice) {
+        if (checkbox.checked) {
+            selecionados.push(indice);
+        }
+    });
+
+    if (selecionados.length === 0) {
+        alert("Selecione pelo menos um assunto para excluir.");
+        return;
+    }
+
+    const confirmar = confirm(
+        "Tem certeza que deseja excluir " +
+        selecionados.length +
+        " assunto(s)?"
+    );
+
+    if (!confirmar) {
+        return;
+    }
+
+    estudos = estudos.filter(function(estudo, indice) {
+        return !selecionados.includes(indice);
+    });
+
+    salvarEstudos();
+    mostrarEstudos();
+}
+    
     atualizarProgresso();
 }
 
@@ -150,5 +193,9 @@ input.addEventListener("keydown", function(evento) {
         adicionarEstudo();
     }
 });
+
+selecionarTodosBtn.addEventListener("click", selecionarTodos);
+
+excluirSelecionadosBtn.addEventListener("click", excluirSelecionados);
 
 mostrarEstudos();
