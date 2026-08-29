@@ -3,7 +3,7 @@ const botao = document.getElementById("adicionarBtn");
 const lista = document.getElementById("listaEstudos");
 const progresso = document.getElementById("progresso");
 
-const CHAVE_STORAGE = "conectaSeguroEstudos";
+const CHAVE_STORAGE = "PaineldeEstudos";
 
 let estudos = JSON.parse(
     localStorage.getItem(CHAVE_STORAGE)
@@ -89,11 +89,20 @@ function marcarConcluido(indice) {
 }
 
 function excluirEstudo(indice) {
+    const confirmar = confirm(
+        'Tem certeza que deseja excluir "' + estudos[indice].nome + '"?'
+    );
+
+    if (!confirmar) {
+        return;
+    }
+
     estudos.splice(indice, 1);
 
     salvarEstudos();
 
     mostrarEstudos();
+}
 }
 
 function atualizarProgresso() {
