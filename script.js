@@ -23,14 +23,14 @@ function mostrarEstudos() {
                     onchange="marcarConcluido(${indice})"
                 >
                 ${estudo.nome}
+                
             </label>
 
-            <const excluir = document.createElement("button");
-excluir.innerHTML = "&#128465;";
-excluir.className = "botaoExcluir";
+            const excluir = document.createElement("button");
+excluir.textContent = "🗑️";
 excluir.title = "Excluir assunto";
-        `;
 
+}
         lista.appendChild(item);
     });
 
